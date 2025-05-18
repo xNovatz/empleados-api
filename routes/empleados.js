@@ -22,8 +22,14 @@ router.get('/', async (req, res) => {
 // Buscar empleados por nombre (ejemplo: /buscar?nombre=Juan)
 router.get('/buscar', async (req, res) => {
   const nombre = req.query.nombre;
-  const empleados = await Empleado.find({ nombre });
-  res.json(empleados);
+  try {
+    const empleados = await Empleado.find({
+      nombre: { $regex: nombre, $options: 'i' }
+    });
+    res.json(empleados);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Actualizar un empleado
