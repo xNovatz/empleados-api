@@ -32,6 +32,17 @@ router.get('/buscar', async (req, res) => {
   }
 });
 
+// Buscar empleados por puesto (ejemplo: /buscar-puesto?puesto=Desarrollador)
+router.get('/buscar-puesto', async (req, res) => {
+  const puesto = req.query.puesto;
+  try {
+    const empleados = await Empleado.find({ puesto });
+    res.json(empleados);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // Actualizar un empleado
 router.put('/:id', async (req, res) => {
   try {
